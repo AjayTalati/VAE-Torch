@@ -60,6 +60,8 @@ parameters, gradients = va:getParameters()
 
 config = {
     learningRate = -0.03,
+    beta1 = 0.05,
+    beta2 = 0.001,
 }
 
 state = {}
@@ -97,12 +99,11 @@ while true do
             local f = va:forward(batch)
             local err = - BCE:forward(f, batch)
             local df_dw = BCE:backward(f, batch):mul(-1)
-
             va:backward(batch,df_dw)
+            print(err)
 
             local KLDerr = KLD:forward(va:get(1).output, batch)
             local de_dw = KLD:backward(va:get(1).output, batch)
-
             encoder:backward(batch,de_dw)
 
             local lowerbound = err  + KLDerr
@@ -111,6 +112,7 @@ while true do
         end
 
         x, batchlowerbound = optim.adagrad(opfunc, parameters, config, state)
+        -- x, batchlowerbound = optim.adam(opfunc, parameters, config, state)
         lowerbound = lowerbound + batchlowerbound[1]
     end
 
