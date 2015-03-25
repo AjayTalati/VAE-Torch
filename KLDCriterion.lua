@@ -13,7 +13,7 @@ end
 function KLDCriterion:updateGradInput(input, target)
 	self.gradInput = {}
     self.gradInput[1] = (-input[1]):clone()
-    self.gradInput[2] = (-torch.exp(input[2])):add(1)
+    self.gradInput[2] = (-torch.exp(torch.mul(input[2],2))):add(1)
 
     return self.gradInput
 end
