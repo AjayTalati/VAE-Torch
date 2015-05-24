@@ -6,7 +6,7 @@ function LinearVA:__init(inputSize, outputSize)
 end
 
 function LinearVA:reset()
-    sigmaInit = 0.01
-    self.weight:normal(0, 0.01)
-    self.bias:normal(0, 0.01)
+    sigmaInit = 0.001
+    self.weight:normal(0, sigmaInit)
+    self.bias:fill(0)
 end
